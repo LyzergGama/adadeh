@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>choose wisely 💔💖</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background: linear-gradient(-45deg, #ff6b6b, #ffb6b6, #ff4d6d, #ffc0cb);
+  background-size: 400% 400%;
+  animation: bg 5s infinite;
+}
+
+@keyframes bg {
+  0% {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0% 50%}
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  padding: 0 20px;
+  text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+}
+
+/* YES BUTTON */
+#yesBtn {
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 18px 26px;
+  border-radius: 40px;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  background: white;
+  color: #ff4d6d;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* NO BUTTON */
+#noBtn {
+  position: absolute;
+  left: 70%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 18px 26px;
+  border-radius: 40px;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  background: #222;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.msg {
+  margin-top: 20px;
+  color: white;
+  font-size: 22px;
+  text-align: center;
+  min-height: 30px;
+  transition: 0.3s;
+}
+
+/* hearts */
+.heart {
+  position: absolute;
+  font-size: 18px;
+  animation: float 2s linear forwards;
+}
+
+@keyframes float {
+  from {transform: translateY(0); opacity: 1;}
+  to {transform: translateY(-300px); opacity: 0;}
+}
+
+/* FLASH */
+.flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="flash" id="flash"></div>
+
+<h1>do you love me? 🥺</h1>
+
+<div class="container">
+  <button id="yesBtn">YES 💖</button>
+  <button id="noBtn">NO 💔</button>
+</div>
+
+<div class="msg" id="msg"></div>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const msg = document.getElementById("msg");
+const flash = document.getElementById("flash");
+
+/* NO ESCAPE */
+function moveNo() {
+  const x = Math.random() * (window.innerWidth - 120);
+  const y = Math.random() * (window.innerHeight - 200);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+/* 💥 YES = CINEMATIC EXPLOSION */
+yesBtn.onclick = () => {
+  msg.innerText = "…";
+
+  // screen flash
+  flash.style.opacity = 1;
+
+  // shake entire screen
+  document.body.style.animation = "none";
+  let i = 0;
+  const shake = setInterval(() => {
+    document.body.style.transform =
+      `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px) scale(1.02)`;
+    i++;
+    if (i > 15) {
+      clearInterval(shake);
+      document.body.style.transform = "none";
+    }
+  }, 50);
+
+  // explosion delay
+  setTimeout(() => {
+    flash.style.opacity = 0;
+    msg.innerText = "I KNEW IT 😭💖 YOU MADE ME THE HAPPIEST";
+
+    bigHeartRain(80);
+  }, 300);
+};
+
+function bigHeartRain(n) {
+  for (let i = 0; i < n; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = Math.random() > 0.5 ? "💖" : "💗";
+
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.top = "70vh";
+    h.style.fontSize = (10 + Math.random() * 35) + "px";
+    h.style.animationDuration = (1 + Math.random() * 1.5) + "s";
+
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2500);
+  }
+}
+
+/* ambient hearts */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "💗";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.top = "100vh";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 2000);
+}, 250);
+</script>
+
+</body>
+</html>
